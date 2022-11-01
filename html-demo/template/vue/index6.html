@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>生命周期</title>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="root" :xyz="xyz">
+		<h3 :style="{opacity}">{{msg}}</h3>
+	</div>
+
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: "#root",
+			data: {
+				opacity: 1,
+				msg: 'hello world',
+				xyz: 3110
+			},
+			// 初始化事件生命周期 
+			// 即将开始进行数据代理数据监测
+			// 此时还无法对vue做任何操作
+			beforeCreate() {
+				console.log('beforeCreate');
+				console.log(this);
+			},
+			// 数据代理结束即将开始解析模板
+			created() {
+				console.log('created');
+				console.log(this);
+			},
+			// 模板解析完毕已生成虚拟dom但是还没有替换到页面上
+			beforeMount() {
+				console.log('beforeMount');
+				console.log(this);
+			},
+			// Vue完成模板解析且生成考虑真实dom渲染到页面上
+			// vue的初始解析工作就结束了
+			// 此时可以进行网络请求,订阅消息...
+			mounted() {
+				console.log('mounted');
+				console.log(this);
+				// setInterval(() => {
+				// 	this.opacity -= 0.01;
+				// 	if (this.opacity < 0) {
+				// 		this.opacity = 1;
+				// 	}
+				// }, 15);
+
+				// 在mounted函数执行结束后因为变动了data数据所以会调用后续的beforeUpdate和updated
+				this.xyz = 311;
+
+				// 在整个延时任务函数执行结束后会调用后续的beforeUpdate和updated
+				setTimeout(() => {
+					this.opacity = 0.5;
+				}, 1000);
+				// 在整个延时任务函数执行结束后会调用后续的beforeUpdate和updated
+				setTimeout(() => {
+					this.msg = 'hello vue';
+				}, 1000);
+			},
+			// 上述过程函数在整个运行过程中只调用一次
+			// 数据发生变动即将开始重新解析模板
+			// 此时数据是修改后的新数据 但是页面还没渲染
+			beforeUpdate() {
+				console.log('beforeUpdate');
+				console.log(this);
+			},
+			// 因数据变动模板重新解析完成
+			// 此时数据和页面都最新的
+			updated() {
+				console.log('updated');
+				console.log(this);
+			},
+			// 主动调用$destroy函数触发销毁流程
+			// 此时的vue实例还可以正常使用 但是对数据的修改不会再触发更新模板
+			// 在这一步关闭其他相关流程
+			beforeDestroy() {
+				console.log('beforeDestroy');
+				console.log(this);
+			},
+			// Vue实例已经销毁
+			// 模板雨实例之间不再联动
+			destroyed() {
+				console.log('destroyed');
+				console.log(this);
+			},
+		});
+	</script>
+</body>
+
+</html>

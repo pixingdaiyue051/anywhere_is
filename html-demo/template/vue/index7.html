@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>component</title>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="root">
+		<!-- <c1></c1>
+		<hr />
+		<c1-e1></c1-e1>
+		<hr />
+		<c2></c2> -->
+
+		<div :style="{ color : color,backgroundColor: bcolor}">
+			<blog-post v-for="post1 in posts" :key="post1.id" :post2="post1"
+				@upt-color="uptColor"></blog-post>
+		</div>
+	</div>
+
+	<div id="root2">
+		<app></app>
+	</div>
+
+	<script type="text/javascript">
+		// 非单文件组件 一个文件内包含有多个组件 *.html
+		// 单文件组件   一个文件只包含一个组件 *.vue
+
+		// 注册全局组件
+		Vue.component('blog-post', {
+			// props 接收父组件传递的参数
+			props: ['post2'],
+			template: `
+				<div :style="{ fontSize : postFontSize + 'px' }">
+					<hr/>
+					<!-- $emit向父组件传递事件 -->
+					<button @click="$emit('upt-color', { color: post2.color, bcolor: post2.bcolor })">
+						改全局外观
+					</button>
+					<button @click="postFontSize++">
+						局部放大
+					</button>
+					<h3>{{ post2.title }}</h3>
+					<h3>{{ post2.name }}</h3>
+					<h3>{{ post2.msg }}</h3>
+				</div>
+			`,
+			data() {
+				return {
+					postFontSize: 5,
+				}
+			}
+		})
+
+		// 声明局部组件
+		const c1 = Vue.extend({
+			// 组件名 非组件注册名
+			name: 'c1',
+			data() {
+				return {
+					msg: 'hello world',
+					name: 'c1',
+				}
+			},
+			template: `
+				<div>
+					<h2>{{name}}</h2>
+					<h3>{{msg}}</h3>
+				</div>
+			`
+		});
+		// const c = Vue.extend(opt) 简写成 const c = opt;
+		const c2 = Vue.extend({
+			name: 'c2',
+			data() {
+				return {
+					msg: 'hello vue',
+					name: 'c2',
+				}
+			},
+			template: `
+				<div>
+					<h2>{{name}}</h2>
+					<h3>{{msg}}</h3>
+				</div>
+			`
+		});
+
+		const vm = new Vue({
+			el: "#root",
+			// 组件对象内的key是注册使用名即模板中使用的标签名
+			// 组件名有多个单次时可以使用匈牙利命名法或驼峰命名法(需要配合vue-cli使用)
+			// 模板上使用组件可以用<c1></c1>或<c1/>(需要配合vue-cli使用)
+			components: {
+				c1, c2,
+				'c1-e1': c1,
+				FgMuj: c2
+			},
+			data: {
+				posts: [
+					{ id: 1, title: 'My journey with Vue', name: 'id111',color:'red',bcolor:'black' },
+					{ id: 2, title: 'Blogging with Vue', name: 'id222',color:'green',bcolor:'skyblue' },
+					{ id: 3, title: 'Why Vue is so fun', name: 'id333',color:'gray',bcolor:'blue' }
+				],
+				color: '',
+				bcolor: '',
+			},
+			methods: {
+				uptColor(val) {
+					this.color = val.color;
+					this.bcolor = val.bcolor;
+				}
+			},
+		});
+
+		const app = Vue.extend({
+			name: 'app',
+			template: `
+				<div>
+					<c1></c1>
+					<hr />
+					<c2></c2>
+				</div>
+			`,
+			components: {
+				c1, c2
+			}
+		});
+
+		console.log(app);
+
+		const vm2 = new Vue({
+			el: '#root2',
+			components: {
+				app
+			}
+		})
+	</script>
+</body>
+
+</html>

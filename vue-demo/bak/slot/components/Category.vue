@@ -1,10 +1,10 @@
 <template>
   <div class="category">
     <CateItem title="美食">
-      <img src="../assets/109951164088049102.jpg" />
+      <img src="/data/pic/109951164088049102.jpg" />
     </CateItem>
     <CateItem title="电影">
-      <video slot="s1" controls src="../assets/145363656316362335.mp4" />
+      <video slot="s1" controls src="/data/vod/145363656316362335.mp4" />
       <template slot-scope="zsobj">
         <a
           href="javascript:void(0);"

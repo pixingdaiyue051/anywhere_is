@@ -5,12 +5,13 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 引入需要被router管理的组件
-import About from '../pages/About.vue'
+import Mid from '../pages/Mid.vue'
 import Backend from '../pages/Backend.vue'
 import Boot from '../pages/Boot.vue'
 import Home from '../pages/Home.vue'
 import Im from '../components/Im.vue'
 import Ws from '../components/Ws.vue'
+import Rtc from '../components/Rtc.vue'
 
 const router = new VueRouter({
     // 路由工作模式 默认hash 可选hash history
@@ -18,9 +19,9 @@ const router = new VueRouter({
     mode: 'hash',
     routes: [
         {
-            name: 'about',
-            path: '/about',   // route的跳转连接 标识 /时必须的(on-nested routes must include a leading slash character)
-            component: About, // 跳转的具体组件
+            name: 'mid',
+            path: '/mid',   // route的跳转连接 标识 /时必须的(on-nested routes must include a leading slash character)
+            component: Mid, // 跳转的具体组件
         },
         {
             name: 'backend',
@@ -60,6 +61,11 @@ const router = new VueRouter({
                     // }
                 },
             ]
+        },
+        {
+            name: 'rtc',
+            path: '/rtc',   // route的跳转连接 标识 /时必须的(on-nested routes must include a leading slash character)
+            component: Rtc, // 跳转的具体组件
         },
     ]
 })

@@ -18,35 +18,35 @@ module.exports = {
     // 开启代理服务器
     proxy: {
       '/boot': {
-        // target: 'http://127.0.0.1:7210',
-        target: 'http://8.136.146.58:8888/boot',
-        ws: true, // 支持提升为websocket请求 默认true
+        target: 'http://127.0.0.1:8005/',
+        ws: false, // 支持提升为websocket请求 默认true
         changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
         pathRewrite: {
           '^/boot': ''
         }
       },
       '/viva': {
-        // target: 'http://127.0.0.1:7132',
-        target: 'http://8.136.146.58:8888/viva',
-        ws: false,
+        target: 'http://127.0.0.1:8005/viva/',
+        ws: true, // 支持提升为websocket请求 默认true
         changeOrigin: false,
         pathRewrite: {
           '^/viva': ''
         }
       },
       '/mid': {
-        target: 'http://8.136.146.58:8081/middle',
+        target: 'http://127.0.0.1:8001/',
+        // target: 'http://8.136.146.58:8081/middle',
         ws: false,
         pathRewrite: {
           '^/mid': ''
         }
       },
-      '/admin': {
-        target: 'http://8.136.146.58:8082/admin',
+      '/backend': {
+        // target: 'http://127.0.0.1:7605/',
+        target: 'https://jiansuotong.top/sc/test/',
         ws: false,
         pathRewrite: {
-          '^/admin': ''
+          '^/backend': ''
         }
       }
     }

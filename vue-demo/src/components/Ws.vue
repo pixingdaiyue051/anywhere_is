@@ -35,15 +35,15 @@ export default {
   },
   methods: {
     conn() {
-      this.ws = new WebSocket(WsConst.WS_URL_1);
+      this.ws = new WebSocket(WsConst.WS_URL);
       // 连接关闭函数
       this.ws.onclose = () => {
         console.log("连接已关闭...");
         clearTimeout(this.tt);
-        if (++this.limit > WsConst.MAX_CONN_LIMIT) {
+        if (++this.limit > WsConst.MAX_CON_LIMIT) {
           return;
         }
-        setTimeout(() => this.conn(), WsConst.RECONN_FREQ);
+        setTimeout(() => this.conn(), WsConst.RECON_FREQ);
       };
       // 连接错误函数
       this.ws.onerror = () => {
@@ -66,7 +66,7 @@ export default {
     },
     heartBeat() {
       this.tt = setTimeout(() => {
-        this.ws.send(JSON.stringify(WsConst.MSG_HEART));
+        this.ws.send(WsConst.MSG_HEART);
         this.heartBeat();
       }, WsConst.HEART_BEAT_FREQ);
     },

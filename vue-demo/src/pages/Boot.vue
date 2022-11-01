@@ -15,7 +15,26 @@
         {{ item.filename }}<button @click="deleteFile(item.id)">-</button>
       </li>
     </ul>
-    <img :src="filepath" alt="" />
+    <p>
+    <img :src="filepath" alt="" style="width: 300px; height: 300px" />
+    <img
+      src="/data/pic/109951164088049102.jpg"
+      alt=""
+      style="width: 300px; height: 300px"
+    />
+    <img
+      src="/data/pic/145363656316362335.gif"
+      alt=""
+      style="width: 300px; height: 300px"
+    />
+    <video
+      src="/data/vod/145363656316362335.mp4"
+      autoplay
+      controls
+      width="300px"
+      height="300px"
+    ></video>
+    </p>
   </div>
 </template>
 

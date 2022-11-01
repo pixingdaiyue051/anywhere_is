@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>事件修饰</title>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="root">
+		<h1>{{msg}}</h1>
+		<!-- 替换掉标签内的内容 -->
+		<h2 v-text="num"></h2>
+		<h3 v-html="con"></h3>
+
+		<!-- 
+			Vue渲染成功后就会将v-cloak去掉,可以使用它做一些预处理
+			当vue加载缓慢时可以使用这个避免将模板语法显示在页面上
+		-->
+		<h4 v-cloak>{{num}}</h4>
+
+		<!-- 
+			v-once只渲染一次
+			之后不再动态渲染模板数据
+		 -->
+		<h4 v-once>{{msg}}</h4>
+
+		<!-- v-pre 不需要使用vue语法的标签 加快编译过程 -->
+		<h5 v-pre>this is a h5</h5>
+
+		<p v-bind:title="title">{{content1}}</p>
+		<p :title="title">{{content1}}</p>
+
+		<p style="color: red;">1</p>
+		<input :value="content1" @change="contentChange" />
+		<p>{{content1}}</p>
+		<p style="color: red;">2</p>
+		<input v-model:value="content2" />
+		<input v-model="content2" />
+
+		<div v-on:click.self="pclick">
+			<p @click.once="pclick">{{pmsg}}</p>
+			<p @click.stop="pclick($event, 51)">{{pmsg}}</p>
+		</div>
+
+		<div v-on:click="pclick">
+			<a :href="url" @click.prevent.stop="jkl">AAAAAA</a>
+		</div>
+
+		<input @keyup.enter="key1" />
+	</div>
+
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: "#root",
+			data: {
+				msg: 'hello world',
+				num: 218,
+				con: "<span>319</span>",
+				pmsg: 'click to change',
+				title: 'title...',
+				content1: "this is a test input1",
+				content2: "this is a test input2",
+				url: 'https://www.baidu.com'
+			},
+			methods: {
+				// event是click事件 num是额外的参数
+				// 模板上调用时不传参则默认会传递event 可以使用$event强制传参
+				pclick(event, num) {
+					console.log(event, num);
+					// 阻止点击事件向上冒泡 可以在标签上使用 click.stop代替
+					// event.stopPropgation();
+					// .once事件只触发一次
+					// .capture事件在捕获阶段就执行 而不是在冒泡阶段执行
+					// .self只有当event.target是当前元素才触发
+					// .passive不等回调事件结束就执行默认事件
+					this.pmsg = this.pmsg == 'click to change' ? 'already changed' : 'click to change';
+				},
+				contentChange(val) {
+					this.content1 = val;
+				},
+				jkl(event) {
+					// 阻止标签点击的默认事件 可以在标签上使用 click.prevent代替
+					// event.preventDefault();
+					console.log('jkl');
+				},
+				key1(event) {
+					// 使用keyCode可以对具体的按键做区分 可以使用keyup keydown的修饰事件实现效果
+					// .enter  回车
+					// .delete  退格 删除
+					// .esc  ESC按键
+					// .space  空格
+					// .up  上
+					// .down  下
+					// .left  左
+					// .right  右
+					// .tab  制表   有默认keyup功能  只能绑定到keydown
+					// 系统按键 需要配合其他按键才能实现keyup   keydown可以直接使用
+					// .ctrl  控制  
+					// .shift  转换
+					// .alt  调整
+					// .meta  系统按键
+					console.log(event.key, event.keyCode);
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

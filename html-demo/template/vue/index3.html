@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>v-if,v-show,v-for</title>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="root">
+		<p style="color: red;">1</p>
+		<!-- v-if 不渲染标签 -->
+		<input value="content" v-if="isShow" />
+		<!-- v-show 隐藏标签 -->
+		<input value="content" v-show="isShow" />
+		<input type="button" value="toggle" @click="toggle" />
+		<ul>
+			<!-- 
+			key是Vue内部使用虚拟dom的唯一标识
+			当数据变化时 使用key对比新旧虚拟dom
+			因此key要唯一 如果使用index需要保证index顺序不会改变
+			-->
+			<!-- 遍历数组 index是数据索引 起始0 -->
+			<li v-for="(item,index) of arr" :key="index">{{index}}-{{item}}</li>
+			<hr />
+			<!-- 遍历对象 k是属性key名 -->
+			<li v-for="(val,k) of obj" :key="k">{{k}}-{{val}}</li>
+			<hr />
+			<!-- 遍历字符串 index是数据索引 起始0 -->
+			<!-- <li v-for="(ch,index) of str" :key="index">{{index}}-{{ch}}</li><hr/> -->
+		</ul>
+		<input v-model="keyword" />
+		<button @click="sort = 1">升序</button>
+		<button @click="sort = 2">降序</button>
+		<button @click="sort = 0">原序</button>
+		<hr />
+		<ul>
+			<li v-for="(item,index) of farr" :key="item.id">{{index}}-{{item.name}}-{{item.age}}</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: "#root",
+			data: {
+				isShow: true,
+				arr: ['ht', 'ok', 'plt'],
+				obj: {
+					id: 1,
+					name: '3ee',
+					age: 46
+				},
+				str: 'hello world',
+				keyword: '',
+				sort: 0,
+				oarr: [
+					{ id: 1001, name: '健康服务vv', age:43 },
+					{ id: 1002, name: '得到任何的', age:32 },
+					{ id: 1003, name: '跟研发的法国还有', age:14 },
+					{ id: 1004, name: '我如果大哥大哥', age:64 },
+					{ id: 1005, name: '325特哥哥的歌', age:26 },
+					{ id: 1006, name: '沃特的语言华人', age:42 },
+				],
+			},
+			computed: {
+				farr() {
+					const arr1 = this.oarr.filter((a) => {
+						return a.name.indexOf(this.keyword) >= 0;
+					});
+					if (!this.sort) {
+						return arr1;
+					}
+					arr1.sort((a1, a2) => {
+						return this.sort == 1 ? a1.age - a2.age : a2.age - a1.age;
+					});
+					return arr1;
+				}
+			},
+			methods: {
+				toggle() {
+					this.isShow = !this.isShow;
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
